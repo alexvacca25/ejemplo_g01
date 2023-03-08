@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blueGrey,
       ),
       home: MyHomePage(
           title: mensaje, edad: 20, nombre: "Alex Vacca", cedula: "1001"),
@@ -42,15 +42,27 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  void _incrementCounter(String op) {
+    switch (op) {
+      case '+':
+        _counter++;
+        break;
+      case '-':
+        (_counter > 0) ? _counter-- : 0;
+        break;
+      case '0':
+        _counter = 0;
+        break;
+      default:
+    }
+
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(20, 179, 90, 0.9),
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -68,14 +80,21 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(onPressed: () {}, child: const Text("Restar")),
                 ElevatedButton(
                     onPressed: () {
-                      _counter = 0;
-                      setState(() {});
+                      _incrementCounter("-");
+                    },
+                    child: const Text("Restar")),
+                ElevatedButton(
+                    onPressed: () {
+                      _incrementCounter("0");
                     },
                     child: const Text("Reset")),
-                ElevatedButton(onPressed: () {}, child: const Text("Sumar")),
+                ElevatedButton(
+                    onPressed: () {
+                      _incrementCounter("+");
+                    },
+                    child: const Text("Sumar")),
               ],
             ),
             Text("Nombre:${widget.nombre}"),
@@ -85,7 +104,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          _incrementCounter("+");
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
